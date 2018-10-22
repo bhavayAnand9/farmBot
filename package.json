@@ -1,0 +1,19 @@
+{
+  "name": "farmer_assistant",
+  "version": "1.0.0",
+  "description": "Simple AI Farmer voice assistant Chat Bot with Web Speech API",
+  "main": "index.js",
+  "scripts": {
+    "start": "nf start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bhavay, Hemant, Abheet, Rishabh",
+  "license": "MIT",
+  "dependencies": {
+    "apiai": "^4.0.2",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2",
+    "socketio": "^1.0.0"
+  }
+}
