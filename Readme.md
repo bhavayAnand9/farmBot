@@ -7,3 +7,7 @@ How to run ?
 3.  install node modules using command `npm i` or `npm install`
 4.  run server command `node index.js`
 5.  open url `localhost:5000` in your browser 
+
+Technical overview of project (if you care):
+
+will be updating soon....
