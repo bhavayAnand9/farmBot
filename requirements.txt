@@ -1,4 +1,3 @@
 scikit-learn
 numpy
-pickle
 pandas

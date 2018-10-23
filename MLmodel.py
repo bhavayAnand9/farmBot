@@ -2,7 +2,6 @@ import sys
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
-import pickle
 import pandas as pd
 
 np.set_printoptions(threshold=np.inf)
