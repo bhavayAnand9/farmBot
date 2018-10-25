@@ -26,7 +26,23 @@ class TFIDFPredictor:
     
 # Evaluate TFIDF predictor
 pred = TFIDFPredictor()
-data=pd.read_csv('datasets/datafile.csv')
+
+data=pd.read_csv('datasets/KCCDataFile.csv')
+
+# CSV/DATA PREPROCESSING
+
+#cleaning redundant rows in csv
+#df = pd.read_csv('datasets/awesome.csv')
+#df.drop_duplicates(subset=None, inplace=True)
+#df.to_csv('awesome2.csv')
+
+#concatinating multiple csv files
+#data2 = pd.read_csv('datasets/datafile2.csv')
+#data3 = pd.read_csv('datasets/datafile3.csv')
+#data4 = pd.read_csv('datasets/datafile4.csv')
+#df = pd.concat([data1, data2, data3, data4], axis=0, join='inner')
+
+
 pred.train(data['QueryText'],data['KCCAns'])
 a=sys.argv[1]
 b=pred.predict(a,data['QueryText'])
