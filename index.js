@@ -56,21 +56,22 @@ io.on('connection', function(socket) {
 
       let aiText = text;
 
-      if(aiText.includes("weather")){
-        var data = "it's fucking awesome!!"
-        socket.emit('bot reply', data)
-      }
+      // if(aiText.includes("weather")){
+      //   var data = ""
+      //   socket.emit('bot reply', data)
+      // }
 
-      else{
-        var spawn = require("child_process").spawn;
-  
-        var process = spawn('python', ["./MLmodel.py", aiText] );
-  
-        process.stdout.on('data', function(data) {
-            console.log('Bot reply: ' + data);
-            socket.emit('bot reply', data.toString());
-        });
-      }
+      // else{
+      // }
+
+      var spawn = require("child_process").spawn;
+
+      var process = spawn('python', ["./MLmodel.py", aiText] );
+
+      process.stdout.on('data', function(data) {
+          console.log('Bot reply: ' + data);
+          socket.emit('bot reply', data.toString());
+      });
 
     });
 

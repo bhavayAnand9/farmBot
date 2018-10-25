@@ -11,8 +11,7 @@ class TFIDFPredictor:
     def __init__(self):
         self.vectorizer = TfidfVectorizer()
  
-    def train(self, x,y):
-      
+    def train(self, x, y):
         self.vectorizer.fit(x,y)
  
     def predict(self, context, utterances):
