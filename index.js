@@ -57,7 +57,21 @@ io.on('connection', function(socket) {
         //data came back from python nlp model
         process.stdout.on('data', function(data) {
             console.log('Bot reply/return from python: ' + data);
-            socket.emit('bot reply', data.toString());
+            // socket.emit('bot reply', data.toString());
+            const revTarget = 'hi';
+            translate
+              .translate(data.toString(), revTarget)
+              .then(outcome => {
+                const hindiTranslation = outcome[0];
+
+                console.log(`data.toString() : ${data.toString()}`);
+                console.log(`hindi Translation of bot reply: ${hindiTranslation}`);
+                socket.emit('bot reply', hindiTranslation);
+              })
+              .catch(err => {
+                console.error('ERROR:', err);
+              });
+              
         });
 
       })
