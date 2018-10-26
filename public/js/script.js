@@ -8,7 +8,12 @@ const outputBot = document.querySelector('.output-bot');
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
+//for hindi language
 recognition.lang = 'hi-IN';
+
+//for english language
+// recognition.lang = 'en-US';
+
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
