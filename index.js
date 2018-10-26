@@ -50,8 +50,11 @@ io.on('connection', function(socket) {
         console.log(`Text: ${aiText}`);
         console.log(`Translation: ${translation}`);
 
+        //spawn a new python process parallely
         var spawn = require("child_process").spawn;
         var process = spawn('python', ["./MLmodel.py", translation] );
+
+        //data came back from python nlp model
         process.stdout.on('data', function(data) {
             console.log('Bot reply/return from python: ' + data);
             socket.emit('bot reply', data.toString());
