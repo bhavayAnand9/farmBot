@@ -13,7 +13,7 @@ class TFIDFPredictor:
  
     def train(self, x, y):
         self.vectorizer.fit(x,y)
- 
+
     def predict(self, context, utterances):
         # Convert context and utterances into tfidf vector
         vector_context = self.vectorizer.transform([context])

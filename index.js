@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 
 io.on('connection', function(socket) {
 
-  socket.on('chat message', (text) => {
+  socket.on('your query', (text) => {
     console.log('Message: ' + text);
 
       // Get a reply from API.ai
@@ -65,9 +65,7 @@ io.on('connection', function(socket) {
       // }
 
       var spawn = require("child_process").spawn;
-
       var process = spawn('python', ["./MLmodel.py", aiText] );
-
       process.stdout.on('data', function(data) {
           console.log('Bot reply: ' + data);
           socket.emit('bot reply', data.toString());
