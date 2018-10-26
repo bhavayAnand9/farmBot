@@ -10,6 +10,7 @@
   "author": "Bhavay, Hemant, Abheet, Rishabh",
   "license": "MIT",
   "dependencies": {
+    "@google-cloud/translate": "^2.1.2",
     "apiai": "^4.0.2",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",

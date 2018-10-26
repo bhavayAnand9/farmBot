@@ -53,4 +53,5 @@ for w in b:
     c+=1
 print(data['KCCAns'][c])
 
-# print("It's from python file MLmodel for debugging it'll always show as it is.")
+#print("It's from python file MLmodel for debugging it'll always show as it is.")
+# print(sys.argv[1])

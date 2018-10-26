@@ -5,6 +5,14 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 
+//setting up google cloud
+const {Translate} = require('@google-cloud/translate');
+const projectId = 'skilled-index-220520';
+const translate = new Translate({
+  projectId: projectId,
+});
+const target = 'en';
+
 app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 
@@ -24,26 +32,36 @@ app.get('/', (req, res) => {
 
 io.on('connection', function(socket) {
 
-  socket.on('chat message', (text) => {
-    console.log('Message: ' + text);
-
-    let aiText = text;
+  socket.on('chat message', (aiText) => {
+    
+    console.log('Message/aiText: ' + aiText);
 
     // if(aiText.includes("weather")){
     //   var data = ""
     //   socket.emit('bot reply', data)
+    // } else{
     // }
 
-    // else{
-    // }
+    translate
+      .translate(aiText, target)
+      .then(results => {
+        const translation = results[0];
 
-    var spawn = require("child_process").spawn;
-    var process = spawn('python', ["./MLmodel.py", aiText] );
-    process.stdout.on('data', function(data) {
-        console.log('Bot reply: ' + data);
-        socket.emit('bot reply', data.toString());
-    });
+        console.log(`Text: ${aiText}`);
+        console.log(`Translation: ${translation}`);
 
-    });
-    
+        var spawn = require("child_process").spawn;
+        var process = spawn('python', ["./MLmodel.py", translation] );
+        process.stdout.on('data', function(data) {
+            console.log('Bot reply/return from python: ' + data);
+            socket.emit('bot reply', data.toString());
+        });
+
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+
+  });
+
 });
