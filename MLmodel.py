@@ -27,7 +27,7 @@ class TFIDFPredictor:
 # Evaluate TFIDF predictor
 pred = TFIDFPredictor()
 
-data=pd.read_csv('datasets/KCCDataFile.csv')
+data=pd.read_csv('datasets/states.csv')
 
 # CSV/DATA PREPROCESSING
 
