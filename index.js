@@ -5,13 +5,9 @@ require('dotenv').config()
 const express = require('express');
 const app = express();
 
-//setting up google cloud
-const {Translate} = require('@google-cloud/translate');
-const projectId = 'skilled-index-220520';
-const translate = new Translate({
-  projectId: projectId,
-});
-const target = 'en';
+// const request = require('request');
+
+var request = require('sync-request');
 
 app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
@@ -25,16 +21,33 @@ io.on('connection', function(socket){
   console.log('a user connected');
 });
 
-// Web UI
 app.get('/', (req, res) => {
   res.sendFile('index.html');
 });
+
+var myAPIKey = 'AIzaSyCY0W-YjzXayUR5ijfhiz5Q_IoKp5EH7Uk';
+
+// function translateUsingGoogleCloud(target, text){
+//   var url = "https://translation.googleapis.com/language/translate/v2?q=" + text + "&target=" + target + "&key=" + myAPIKey;
+//   console.log(`url : ${url}`);
+
+//   // request.post(url, function(error, response, body){
+//   //     if(!error && response.statusCode == 200) {
+//   //         var data = JSON.parse(body)
+//   //         console.log(data.data.translations[0]);
+//   //         return data.data.translations[0].translatedText;
+//   //     }
+//   // });
+
+//   var dataFromGoogleTranslateAPI = request('POST', url);
+//   console.log(dataFromGoogleTranslateAPI);
+// }
 
 io.on('connection', function(socket) {
 
   socket.on('chat message', (aiText) => {
     
-    console.log('Message/aiText: ' + aiText);
+    console.log('Message/aiText in hindi: ' + aiText);
 
     // if(aiText.includes("weather")){
     //   var data = ""
@@ -42,42 +55,30 @@ io.on('connection', function(socket) {
     // } else{
     // }
 
-    translate
-      .translate(aiText, target)
-      .then(results => {
-        const translation = results[0];
+    // var aiTextToEnglish = translateUsingGoogleCloud('en', aiText);
 
-        console.log(`Text: ${aiText}`);
-        console.log(`Translation: ${translation}`);
+    var url = "https://translation.googleapis.com/language/translate/v2?q=" + aiText + "&target=en" + "&key=" + myAPIKey;
+    var dataFromGoogleTranslateAPI = request('POST', encodeURI(url));
+    console.log(JSON.parse(dataFromGoogleTranslateAPI.getBody('utf-8')).data.translations[0].translatedText);
 
-        //spawn a new python process parallely
-        var spawn = require("child_process").spawn;
-        var process = spawn('python', ["./MLmodel.py", translation] );
+    var aiTextToEnglish = JSON.parse(dataFromGoogleTranslateAPI.getBody('utf-8')).data.translations[0].translatedText;
+    console.log('aiText translated from hindi to english : ' + aiTextToEnglish);
 
-        //data came back from python nlp model
-        process.stdout.on('data', function(data) {
-            console.log('Bot reply/return from python: ' + data);
-            // socket.emit('bot reply', data.toString());
-            const revTarget = 'hi';
-            translate
-              .translate(data.toString(), revTarget)
-              .then(outcome => {
-                const hindiTranslation = outcome[0];
+    //spawn a new python process parallely
+    var spawn = require("child_process").spawn;
+    var process = spawn('python', ["./MLmodel.py", aiTextToEnglish] );
 
-                console.log(`data.toString() : ${data.toString()}`);
-                console.log(`hindi Translation of bot reply: ${hindiTranslation}`);
-                socket.emit('bot reply', hindiTranslation);
-              })
-              .catch(err => {
-                console.error('ERROR:', err);
-              });
-              
-        });
+    //data came back from python nlp model
+    process.stdout.on('data', function(data) {
+      console.log('Bot reply/return from python in english: ' + data.toString());
+      // socket.emit('bot reply', data.toString());
+      // var botReplyInHindi = translateUsingGoogleCloud('hi', data.toString())
+      var url2 = "https://translation.googleapis.com/language/translate/v2?q=" + data + "&target=hi" + "&key=" + myAPIKey;
 
-      })
-      .catch(err => {
-        console.error('ERROR:', err);
-      });
+      var botReplyInHindi = request('POST', encodeURI(url2));
+      console.log(`botReplyInHindi : ${JSON.parse(botReplyInHindi.getBody('utf-8')).data.translations[0].translatedText}`)
+      socket.emit('bot reply', botReplyInHindi);
+    });
 
   });
 
