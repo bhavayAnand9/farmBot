@@ -58,10 +58,15 @@ socket.on('bot reply', function(replyText) {
   // if(replyText == '') replyText = '(No answer...)';
   // outputBot.textContent = replyText;
 
-  var adio = document.getElementById("hindiPlayer");
-  var source = document.getElementById('hindiSrc');
-  source.src = "https://translate.google.com.vn/translate_tts?ie=UTF-8&q=" + replyText + "+&tl=hi&client=tw-ob";
+  var button = document.getElementById("butt");
+  button.click();
 
   adio.play();
 
 });
+
+var x = document.getElementById("myAudio"); 
+
+function playAudio(){
+  x.play();
+}
