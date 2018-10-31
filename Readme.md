@@ -1,4 +1,4 @@
-Requirements : Node.JS (For server), Python(for ChatBot)
+Requirements : Node.JS (For server), Python(for NLP MODEL)
 
 How to run ?
 
